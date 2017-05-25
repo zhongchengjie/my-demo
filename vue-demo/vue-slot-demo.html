@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>基于slot的登录注册找回密码demo</title>
+		<link rel="stylesheet" href="bootstrap-3.3.0/css/bootstrap.min.css" />
+	    <script src="js/jquery-1.11.1.min.js"></script>
+	    <script src="bootstrap-3.3.0/js/bootstrap.min.js"></script>
+		<script src="js/vue.js"></script>
+		<style>
+		     .div-hidden{display:none}  
+		     .div-active{display:block}
+		</style>
+	</head>
+	<body>
+       <div class="container" id="demo">
+       	  <h3>基于slot的登录注册找回密码demo</h3>
+       	  <div style="margin-top:20px">
+	       	 <button type="button" class="btn btn-default btn-sm" @click="openRegister">注册</button>&nbsp;&nbsp;
+	       	 <button type="button" class="btn btn-default btn-sm" @click="openLogin">登录</button>&nbsp;&nbsp;
+	       	 <button type="button" class="btn btn-default btn-sm" @click="openFindPwd">找回密码</button>
+		  </div>
+		  <div style="width: 40%;margin-top:30px">
+		  	 <!--注册 父组件模板-->
+		  	 <register-component v-bind:class="{'div-active':showRegister}">
+		        <span slot="header">用户注册</span>
+		        <form class="form-horizontal" slot="body">
+			       	<div class="form-group">
+				       <label for="name" class="col-sm-2 control-label">Email</label>
+					   <div class="col-sm-10">
+					      <input type="email" class="form-control" name="email" placeholder="Email">
+					   </div>
+					</div>
+					<div class="form-group">
+				       <label for="name" class="col-sm-2 control-label">Name</label>
+					   <div class="col-sm-10">
+					      <input type="text" class="form-control" name="name" placeholder="Name">
+					   </div>
+					</div>
+					<div class="form-group">
+				       <label for="Password" class="col-sm-2 control-label">Password</label>
+					   <div class="col-sm-10">
+					      <input type="password" class="form-control" name="password" placeholder="password">
+					   </div>
+					</div>
+					<div class="form-group">
+				       <label for="sex" class="col-sm-2 control-label">Sex</label>
+					   <div class="col-sm-10">
+					      <select class="form-control" name="sex">
+					      	 <option value="1">Male</option>
+					      	 <option value="2">Female</option>
+					      </select>
+					   </div>
+					</div>
+					<div class="form-group">
+					    <label for="address" class="col-sm-2 control-label">Address</label>
+					    <div class="col-sm-10">
+					       <textarea class="form-control"  name="address" placeholder="Address"></textarea>
+					    </div>
+				   </div>
+		        </form>
+		        <button type="button" class="btn btn-default btn-sm" slot="footer">Register</button>
+		     </register-component>
+		     
+		     <login-component v-bind:class="{'div-active':showLogin}">
+		        <span slot="header">用户登录</span>
+		        <form class="form-horizontal" slot="body">
+			       	<div class="form-group">
+				       <label for="name" class="col-sm-2 control-label">Name</label>
+					   <div class="col-sm-10">
+					      <input type="text" class="form-control" name="name" placeholder="Name">
+					   </div>
+					</div>
+					<div class="form-group">
+				       <label for="Password" class="col-sm-2 control-label">Password</label>
+					   <div class="col-sm-10">
+					      <input type="password" class="form-control" name="password" placeholder="password">
+					   </div>
+					</div>
+			    </form>
+		       <button type="button" class="btn btn-default btn-sm" slot="footer">Login</button>
+		     </login-component>
+		     
+		     <findpwd-component v-bind:class="{'div-active':showFindPwd}">
+		        <span slot="header">找回密码</span>
+		        <form class="form-horizontal" slot="body">
+		        	<div class="form-group">
+				       <label for="name" class="col-sm-2 control-label">Email</label>
+					   <div class="col-sm-10">
+					      <input type="email" class="form-control" name="email" placeholder="Email">
+					   </div>
+					</div>
+		        </form>
+		        <button type="button" class="btn btn-default btn-sm" slot="footer">Send</button>
+		     </findpwd-component>
+		  </div>
+       	  
+       </div>	 
+       <script type="text/template" id="commonTemplate">
+	       	<div class="div-hidden">
+	      	   <h4><slot name="header"></slot></h4>
+	      	   <slot name="body"></slot>
+			   <p style="text-align: center;"><slot name="footer"></slot></p>
+			</div>
+	    </script>
+	    
+	   <script type="text/template" id="inputEmail">
+            <div class="form-group">
+		       <label for="name" class="col-sm-2 control-label">Email</label>
+			   <div class="col-sm-10">
+			      <input type="email" class="form-control" name="email" placeholder="Email">
+			   </div>
+			</div>
+	    </script>
+	    <script type="text/template" id="inputName">
+            <div class="form-group">
+		       <label for="name" class="col-sm-2 control-label">Name</label>
+			   <div class="col-sm-10">
+			      <input type="text" class="form-control" name="name" placeholder="Name">
+			   </div>
+			</div>
+	    </script>
+	    <script type="text/template" id="inputAge">
+            <div class="form-group">
+		       <label for="age" class="col-sm-2 control-label">Age</label>
+			   <div class="col-sm-10">
+			      <input type="number" class="form-control" name="age" placeholder="Age">
+			   </div>
+			</div>
+	    </script>
+	    <script type="text/template" id="selectSex">
+            <div class="form-group">
+		       <label for="sex" class="col-sm-2 control-label">Sex</label>
+			   <div class="col-sm-10">
+			      <select class="form-control" name="sex">
+			      	 <option value="1">Male</option>
+			      	 <option value="2">Female</option>
+			      </select>
+			   </div>
+			</div>
+	    </script>
+	    <script type="text/template" id="textAddress">
+            <div class="form-group">
+			    <label for="address" class="col-sm-2 control-label">Address</label>
+			    <div class="col-sm-10">
+			       <textarea class="form-control"  name="address" placeholder="Address"></textarea>
+			    </div>
+		    </div>
+	    </script>
+	   
+	</body>
+	<script >
+		var inputEmail = {
+		   template: '#inputEmail'
+		};
+		var inputName = {
+		   template: '#inputName'
+		};
+		var inputAge = {
+		   template: '#inputAge'
+		};
+		var selectSex = {
+		   template: '#selectSex'
+		};
+		var textAddress = {
+		   template: '#textAddress'
+		};
+	    var commonComponent = {
+		   template: '#commonTemplate',
+		   props: ['show'],
+		  /* components: {
+				// 局部注册Child组件，该组件只能在Parent组件内使用
+				'input-email':inputEmail,
+				'input-name':inputName,
+				'input-age':inputAge,
+				'select-sex':selectSex,
+				'textarea-address':textAddress,
+			}*/
+		};
+	
+		var vueDemo = new Vue({
+							el:"#demo",
+							data:{showLogin:false,showRegister:true,showFindPwd:false},
+							components: {
+							  'register-component':commonComponent,
+							  'login-component':commonComponent,
+							  'findpwd-component':commonComponent
+							},
+							methods:{
+								openRegister:function(){
+									this.showRegister=true;
+									this.showLogin=false;
+									this.showFindPwd=false;
+								},
+								openLogin:function(){
+									this.showRegister=false;
+									this.showLogin=true;
+									this.showFindPwd=false;
+								},
+								openFindPwd:function(){
+									this.showRegister=false;
+									this.showLogin=false;
+									this.showFindPwd=true;
+								}
+							}
+							
+					  })
+	
+	</script>
+</html>

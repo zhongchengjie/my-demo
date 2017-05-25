@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>vue增删改查实例</title>
+		<link rel="stylesheet" href="bootstrap-3.3.0/css/bootstrap.min.css" />
+	    <script src="js/jquery-1.11.1.min.js"></script>
+	    <script src="bootstrap-3.3.0/js/bootstrap.min.js"></script>
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+       <div class="container" id="demo">
+       	  <h3>vue增删改查实例</h3>
+       	  <div style="width: 40%;margin-top:30px">
+	       	  <form class="form-horizontal" id="userForm">
+				  <div class="form-group">
+				    <label for="name" class="col-sm-2 control-label">Name</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" v-model="user.name" id="name" name="name" placeholder="Name">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="age" class="col-sm-2 control-label">Age</label>
+				    <div class="col-sm-10">
+				      <input type="number" class="form-control" v-model="user.age" id="age" name="age" placeholder="Age">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="sex" class="col-sm-2 control-label">Sex</label>
+				    <div class="col-sm-10">
+				      <select class="form-control" id="sex"  v-model="user.sex" name="sex">
+				      	 <option value="1">Male</option>
+				      	 <option value="2">Female</option>
+				      </select>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="address" class="col-sm-2 control-label">Address</label>
+				    <div class="col-sm-10">
+				       <textarea class="form-control" id="address" name="address" placeholder="Address" v-model="user.address"></textarea>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+				      <button type="button" @click="createNewUser()" class="btn btn-default">Create</button>
+				    </div>
+				  </div>
+			  </form>
+		  </div>
+       	  <table class="table table-bordered table-hover table-condensed" style="width:70%;margin-top:20px">
+       	  	 <thead>
+       	  	 	<tr>
+       	  	 	    <th>No</th>
+       	  	 		<th>Name</th>
+       	  	 		<th>Age</th>
+       	  	 		<th>Sex</th>
+       	  	 		<th>Address</th>
+       	  	 		<th width="120px">Operate</th>
+       	  	 	</tr>
+       	  	 </thead>
+       	  	 <tbody>
+       	  	 	<tr v-for="(user,index) in userData">
+       	  	 		<td>{{index+1}}</td>
+       	  	 		<td>{{user.name}}</td>
+       	  	 		<td>{{user.age}}</td>
+       	  	 		<td>{{showUserSex(user.sex)}}</td>
+       	  	 		<td>{{user.address}}</td>
+       	  	 		<td>
+       	  	 			<button type="button" class="btn btn-default btn-xs" @click="deleteUser(index)">Delete</button>
+       	  	 			<button type="button" class="btn btn-default btn-xs">Update</button>
+       	  	 		</td>
+       	  	 	</tr>
+       	  	 </tbody>
+       	  </table>
+       </div>	  
+	   
+	   
+	</body>
+	<script >
+		var user_data = [{name:"www",age:24,sex:"1",address:"广州市天河区"},{name:"yyy",age:24,sex:"2",address:"广州市天河区"}];
+		var vueDemo = new Vue({
+							el:"#demo",
+							data:{user:{name:"",age:22,sex:"1",address:""},userData:user_data},
+							methods:{
+								showUserSex:function(sex){
+									if(sex=="1"){
+										return "Male";
+									}
+									else{
+										return "FeMale";
+									}
+								},
+								createNewUser:function(){
+									this.userData.push(this.user);
+									this.user={name:"",age:22,sex:"1",address:""};
+								},
+								deleteUser:function(index){
+									this.userData.splice(index,1);
+								}
+							}
+					  })
+	
+	</script>
+</html>
