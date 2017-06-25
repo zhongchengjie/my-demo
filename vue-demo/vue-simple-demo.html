@@ -1,11 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <title>vue-simple-demo</title>
     <script src="js/vue.js"></script>
 </head>
 <body>
+<div id="app" style="padding-left:20px;">
+    <h4>1.双向绑定例子</h4>
+    <p>{{ message }}</p>
+    <p v-once>v-once一次插值实例：{{ message }}&nbsp;<span>{{ message }}</span></p>
+    <input type="text" v-model="message"/>
+    <p>通过控制台改变message的值，体现双向绑的特性</p>
+    <p>“Mustache” 语法（双大括号）的文本插值不能用在html属性中使用</p>
 
+    <h4>2.vue-html</h4>
+    <p v-html="spanHtml"></p>
+    <p>v-html：插入的内容都会被当做 HTML，相当于innerHtml</p>
+
+    <p>指令（Directives）是带有 v- 前缀的特殊属性。指令的职责就是当其表达式的值改变时相应地将某些行为应用到 DOM 上</p>
+
+    <h4>3.v-bind指令</h4>
+    <button type="button" :disabled="b1" :id="'btn-'+btnIndex1">按钮1</button>
+    <button type="button" :disabled="b2" :id="'btn-'+btnIndex2">按钮2</button>
+    <p>如果条件被求值为 false 的话该属性会被移除</p>
+
+    <h4>4.filter</h4>
+    <p>{{ message | capitalize }}</p>
+    <p>过滤器被用作一些常见的文本格式化，只能在 mustache 绑定和 v-bind 表达式</p>
+
+    <h4>3.计算属性</h4>
+    <p>Original message: "{{ message }}"</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    <p>now: "{{now }}"</p>
+    <p>可以像绑定普通属性一样在模板中绑定计算属性</p>
+    <p>计算属性是基于它的依赖缓存。计算属性只有在它的相关依赖发生改变时才会重新取值。这就意味着只要 message 没有发生改变，多次访问 reversedMessage 计算属性会立即返回之前的计算结果，而不必再次执行函数。</p>
+
+    <p>v-show 不支持 template 语法，也不支持 v-else。</p>
+
+    <h4>5.使用-key-控制元素的可重用</h4>
+    <template v-if="loginType=='1'">
+        <label>UserName:</label>
+        <input type="text" placeholder="Please Enter Your UserName" key="username-input">
+    </template>
+    <template v-else>
+        <label>Email:</label>
+        <input type="email" placeholder="Please Enter Your Email" key="email-input">
+    </template>
+    <p><button type="button" @click="switchLoginType">切换</button></p>
+
+    <h4>5.显示过滤/排序字段</h4>
+    <ul>
+        <li v-for="n in evenNumbers">{{ n }}</li>
+    </ul>
+
+    <h4>6.表单组件绑定</h4>
+    <p>6.1、多选</p>
+    <input type="checkbox" id="checkbox" value="1111" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+    <p>勾选多个</p>
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames }}</span>
+    <p>6.2、单选</p>
+    <input type="radio" id="one" value="One-1" v-model="picked">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two-2" v-model="picked">
+    <label for="two">Two</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+    <p>6.3、多选框绑定value</p>
+    <input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b">
+    <label for="checkbox">{{ toggle }}</label>
+</div>
+
+<script>
+    var  data={message:"hello vue",spanHtml:"<span style='color:red'>hello from v-html</span>",b1:true,b2:false,btnIndex1:1,btnIndex2:2,loginType:"1",numbers: [ 0,1, 2, 3, 4, 5 ],checked:false,checkedNames: [],picked:'',toggle:'2',a:'1',b:'2'};
+    var vm=new Vue({
+        el: '#app',
+        data: data,
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+        computed: {
+            reversedMessage: function () {
+                return this.message.split('').reverse().join('')
+            },
+            now: function () {
+                return Date.now()
+            },
+            evenNumbers: function () {
+                return this.numbers.filter(function (number) {
+                    return number % 2 === 0
+                })
+            }
+
+
+        },
+        methods:{
+            switchLoginType:function(){
+                if(this.loginType=="1"){
+                    this.loginType = "2";
+                }else{
+                    this.loginType = "1";
+                }
+                console.log(this.loginType)
+            }
+        }
+
+
+
+    })
+</script>
 </body>
 </html>
