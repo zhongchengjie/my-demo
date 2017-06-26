@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>vue-props-demo</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app" style="padding-left:20px;">
+    <h4>props使用示例</h4>
+    <component1 :parent-msg="msg1"></component1>
+    <p>在子组件中定义的数据，只能用在子组件的模板。在父组件中定义的数据，只能用在父组件的模板。如果父组件的数据要在子组件中使用，则需要子组件定义props。</p>
+    <template id="component1">
+    	<div>
+    	    <p>{{parentMsg}}</p>
+    	    <p>{{msg2}}</p>
+    	</div>
+    </template>
+</div>
+
+<script>
+    var vm=new Vue({
+        el: '#app',
+        data: {msg1:"Hello Vue from vm!"},
+        components:{'component1':{
+        	template:"#component1",
+        	props:["parentMsg"],
+        	data:function(){
+        		return {msg2:"Hello Vue from component1!"}
+        	}
+           }
+        	
+        }
+    })
+</script>
+</body>
+</html>
