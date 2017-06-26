@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue组件实例</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h4>1.单个slot</h4>
+        <div>
+            <h5>我是父组件的标题（宿主元素不为空）</h5>
+            <component1>
+                <span>这是一些初始内容（非slot的备用内容）</span>
+            </component1>
+            <p>---------------------------------------</p>
+            <h5>我是父组件的标题（宿主元素为空，显示备用内容）</h5>
+            <component1></component1>
+        </div>
+        <p>NOTE:</p>
+        <p>当子组件模板只有一个没有属性的 slot 时，父组件整个内容片段将插入到 slot 所在的 DOM 位置，并替换掉 slot 标签本身。</p>
+        <p>最初在 slot 标签中的任何内容都被视为备用内容。备用内容在子组件的作用域内编译，并且只有在宿主元素为空，且没有要插入的内容时才显示备用内容。</p>
+
+        <h4>2.具名slot</h4>
+        <component2>
+            <h3 slot="header_slot">这里可能是一个页面标题</h3>
+            <p>主要内容的一个段落。</p>
+            <p>另一个主要段落。</p>
+            <p slot="footer_slot">这里有一些联系信息</p>
+        </component2>
+
+        <h4>3.作用域插槽</h4>
+        <component3>
+                <!-- 作用域插槽也可以是具名的 -->
+                <template slot="item" scope="props">
+                    <li class="my-fancy-item">{{ props.text }}</li>
+                </template>
+        </component3>
+
+        <h4>4.动态组件</h4>
+        <component v-bind:is="currentView">
+        </component>
+
+    </div>
+    <script>
+
+        //注册组件1
+        var component1= {
+            template: '<div><p>我是子组件的标题</p><slot>这是slot中的备用内容</slot></div>'
+        }
+
+        //注册组件2
+        var component2= {
+            template: '<div>' +
+                            '<header><slot name="header_slot"></slot></header>'+
+                            '<main><slot></slot></main>' +
+                            '<footer><slot name="footer_slot"></slot></footer>' +
+                      '</div>'
+        }
+
+        //注册组件3
+        var component3= {
+            template: '<ul>' +
+                          '<slot name="item" v-for="item in items" :text="item.text"></slot>'+
+                     '</ul>',
+            data:function(){
+                var obj = {"items":[{'text':'abc'},{'text':'def'}]};
+                return obj;
+            }
+        }
+
+        //注册组件4
+        var Home ={
+            template:"<p>Welcome to Home</p>"
+        }
+
+        // 创建根实例
+        new Vue({
+            el: '#app',
+            data:{currentView:Home},
+            components: {
+                'component1': component1,
+                'component2': component2,
+                'component3': component3
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue组件实例</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h4>1.注册组件(全局)</h4>
+        <component1></component1>
+        <p>1、注册组件在创建实例之前</p>
+        <p>2、data必须是函数</p>
+
+        <h4>2、局部注册</h4>
+        <component2></component2>
+        <component3></component3>
+
+        <h4>3、prop传递数据</h4>
+        <component4 message="hello" user-name="www"  ></component4>
+        <p>1、组件实例的作用域是孤立的。这意味着不能(也不应该)在子组件的模板内直接引用父组件的数据。要让子组件使用父组件的数据，我们需要通过子组件的props选项。</p>
+        <p>2、子组件要显式地用 props 选项声明它期待获得的数据</p>
+
+        <h4>4、动态 prop</h4>
+        <input type='text' v-model="parentMessage">
+        <component5  :parent-msg="parentMessage"></component5>
+
+        <h4>5、自定义事件（将子组件的数据传递到父组件）</h4>
+        <p>{{total}}</p>
+        <component6  v-on:sum="sum_total"></component6>
+        <component6  v-on:sum="sum_total"></component6>
+        <p>1、使用 $on(eventName) 监听事件，使用 $emit(eventName) 触发事件。</p>
+    </div>
+    <script>
+        //注册组件1
+        Vue.component('component1',{
+            template:'<div>A custom component!&nbsp;Mssage:{{message}}</div>',
+            data:function () {
+                return {message:"Hello Vue"}
+            }
+        })
+        //注册组件2
+        var component2 = {
+            template: '<div>component A!</div>'
+        }
+        //注册组件3
+        var component3 = {
+            template: '<div>component B!</div>'
+        }
+        //注册组件4（子组件）
+        var component4 = {
+            props:['message','userName'],
+            template: '<div>{{message}},{{userName}}!  By prop</div>'
+        }
+        //注册组件5（子组件）
+        var component5 = {
+            props:['parentMsg'],
+            template:"<div>{{parentMsg}}</div>"
+        }
+        //注册组件6
+        Vue.component('component6',{
+            template:'<button v-on:click="add">{{counter}}</button>',
+            data:function () {
+                return {counter:0}
+            },
+            methods:{
+                add:function () {
+                    this.counter+=1;
+                    this.$emit('sum');
+                }
+            }
+        })
+        // 创建根实例
+        new Vue({
+            el: '#app',
+            data:{parentMessage:'dynamic prop',total:0},
+            components: {
+                'component2': component2,
+                'component3': component3,
+                'component4': component4,
+                'component5': component5,
+            },
+            methods:{
+                sum_total:function () {
+                    this.total+=1;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
