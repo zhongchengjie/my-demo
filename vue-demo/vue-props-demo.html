@@ -10,32 +10,32 @@
     <h4>props使用示例</h4>
     <component1 v-bind:parent-msg="msg1"></component1>
     <p>在子组件中定义的数据，只能用在子组件的模板。在父组件中定义的数据，只能用在父组件的模板。如果父组件的数据要在子组件中使用，则需要子组件定义props。</p>
-    <template id="component1">
+    <script type="text/template" id="component1">
     	<div>
-    	    <p>{{parentMsg}}</p>
-    	    <p>{{msg2}}</p>
-    	    <p>{{toLowerCase}}</p>
+    	    <p>msg1:{{parentMsg}}</p>
+    	    <p>msg3:{{msg3}}</p>
+    	    <p>computed:{{toLowerCase}}</p>
     	</div>
-    </template>
+    </script>
 </div>
 
 <script>
+	var component1 = {
+		 template:"#component1",
+		 props:["parentMsg"],
+		 data:function(){
+        		return {msg3:"Hello Vue from component1!"}
+         },
+    	 computed:{
+    		toLowerCase:function(){
+    			return this.parentMsg.trim().toLowerCase()
+    		}
+         }
+    }
     var vm=new Vue({
         el: '#app',
         data: {msg1:"Hello Vue from vm!"},
-        components:{'component1':{
-        	template:"#component1",
-        	props:["parentMsg"],
-        	data:function(){
-        		return {msg2:"Hello Vue from component1!"}
-        	},
-        	computed:{
-        		toLowerCase:function(){
-        			return this.parentMsg.trim().toLowerCase()
-        		}
-            }
-        	
-        }
+        components:{'component1':component1}
     })
 </script>
 </body>
