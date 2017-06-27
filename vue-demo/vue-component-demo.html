@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>vue组件实例</title>
+    <title>vue-component-demo</title>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
         <component3></component3>
 
         <h4>3、prop传递数据</h4>
-        <component4 message="hello" user-name="www"  ></component4>
+        <component4 message="hello" user-name="www" :parent-msg="parentMessage"></component4>
         <p>1、组件实例的作用域是孤立的。这意味着不能(也不应该)在子组件的模板内直接引用父组件的数据。要让子组件使用父组件的数据，我们需要通过子组件的props选项。</p>
         <p>2、子组件要显式地用 props 选项声明它期待获得的数据</p>
 
@@ -30,7 +30,15 @@
         <component6  v-on:sum="sum_total"></component6>
         <component6  v-on:sum="sum_total"></component6>
         <p>1、使用 $on(eventName) 监听事件，使用 $emit(eventName) 触发事件。</p>
+        
+        <h4>6、父子组件</h4>
+        <parent-component></parent-component>
+        
+        <script type="text/template" id="parentComponent">
+        	  <div><p>I am from parent component</p><child-component></child-component></div>
+        </script>
     </div>
+    
     <script>
         //注册组件1（全局注册）
         Vue.component('component1',{
@@ -49,8 +57,8 @@
         }
         //注册组件4（子组件）
         var component4 = {
-            props:['message','userName'],
-            template: '<div>{{message}},{{userName}}!  By prop</div>'
+            props:['message','userName','parentMsg'],
+            template: "<div><div>{{message}},{{userName}},{{parentMsg}}</div><p style='padding-left:150px'>-----By prop</p></div>"
         }
         //注册组件5（子组件）
         var component5 = {
@@ -70,6 +78,15 @@
                 }
             }
         })
+        
+        //注册一个子组件
+        var childComponent = {template:"<p>I am from child component</p>"};
+        //注册一个父组件
+        var parentComponent = {
+        	template:"#parentComponent",
+            components:{'child-component':childComponent}
+        }
+        
         // 创建根实例
         new Vue({
             el: '#app',
@@ -79,6 +96,7 @@
                 'component3': component3,
                 'component4': component4,
                 'component5': component5,
+                'parent-component':parentComponent
             },
             methods:{
                 sum_total:function () {

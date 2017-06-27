@@ -3,16 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <title>vue-props-demo</title>
-    <script src="js/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
 </head>
 <body>
 <div id="app" style="padding-left:20px;">
-    <h4>props使用示例</h4>
-    <component1 v-bind:parent-msg="msg1"></component1>
+    <h4>1、props使用示例</h4>
+    <component1 v-bind:parent-msg="msg1" msg2="Hello Vue from parent"></component1>
     <p>在子组件中定义的数据，只能用在子组件的模板。在父组件中定义的数据，只能用在父组件的模板。如果父组件的数据要在子组件中使用，则需要子组件定义props。</p>
+    <p>子组件使用计算属性操作父组件的data</p>
+    
+    <h4>2、props循环列表数据</h4>
+    <ul><component2  v-for="user in dataList" :user-info="user"></component2></ul>
+    <p>备注：此组件的模板不能使用script type="text/template"来书写</p>
+    
     <script type="text/template" id="component1">
     	<div>
     	    <p>msg1:{{parentMsg}}</p>
+    	    <p>msg2:{{msg2}}</p>
     	    <p>msg3:{{msg3}}</p>
     	    <p>computed:{{toLowerCase}}</p>
     	</div>
@@ -20,9 +27,10 @@
 </div>
 
 <script>
+	//组件1
 	var component1 = {
 		 template:"#component1",
-		 props:["parentMsg"],
+		 props:["parentMsg","msg2"],
 		 data:function(){
         		return {msg3:"Hello Vue from component1!"}
          },
@@ -32,10 +40,17 @@
     		}
          }
     }
+	
+	//组件2
+	var component2 = {
+		template:"<li>{{userInfo.name}}</li>",
+		props:["userInfo"]
+	}
+	var dataList=[{name:"xxx"},{name:"yyy"},{name:"zzz"}];
     var vm=new Vue({
         el: '#app',
-        data: {msg1:"Hello Vue from vm!"},
-        components:{'component1':component1}
+        data: {msg1:"Hello Vue from vm!",dataList:dataList},
+        components:{'component1':component1,'component2':component2}
     })
 </script>
 </body>

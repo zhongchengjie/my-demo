@@ -6,7 +6,7 @@
     <script src="js/vue.js"></script>
 </head>
 <body>
-<div id="app" style="padding-left:20px;">
+<div id="app" style="padding-left:40px;">
     <h4>1.双向绑定例子</h4>
     <p>{{ message }}</p>
     <p v-once>v-once一次插值实例：{{ message }}&nbsp;<span>{{ message }}</span></p>
@@ -78,10 +78,13 @@
     <p>6.3、多选框绑定value</p>
     <input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b">
     <label for="checkbox">{{ toggle }}</label>
+    <p>6.4、单选绑定value</p>
+    <input type="radio" v-model="radioValue" v-bind:value="radioVal">
+    <label for="radio">{{radioValue}}</label>
 </div>
 
 <script>
-    var  data={message:"hello vue",spanHtml:"<span style='color:red'>hello from v-html</span>",b1:true,b2:false,btnIndex1:1,btnIndex2:2,loginType:"1",numbers: [ 0,1, 2, 3, 4, 5 ],checked:false,checkedNames: [],picked:'',toggle:'2',a:'1',b:'2'};
+    var  data={message:"hello vue",spanHtml:"<span style='color:red'>hello from v-html</span>",b1:true,b2:false,btnIndex1:1,btnIndex2:2,loginType:"1",numbers: [ 0,1, 2, 3, 4, 5 ],checked:false,checkedNames: [],picked:'',toggle:'2',a:'1',b:'2',radioVal:"picked",radioValue:"not picked"};
     var vm=new Vue({
         el: '#app',
         data: data,
