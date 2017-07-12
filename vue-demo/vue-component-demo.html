@@ -32,10 +32,15 @@
         <p>1、使用 $on(eventName) 监听事件，使用 $emit(eventName) 触发事件。</p>
         
         <h4>6、父子组件</h4>
-        <parent-component></parent-component>
+        <parent-component ref="pc"></parent-component>
+        <button type="button" @click="showChildMsg">显示子组件的msg</button>
         
         <script type="text/template" id="parentComponent">
-        	  <div><p>I am from parent component</p><child-component></child-component></div>
+        	<div>
+        	  	<p>I am from parent component</p>
+        	    <child-component1></child-component1>
+        	    <child-component2></child-component2>
+            </div>
         </script>
     </div>
     
@@ -80,15 +85,29 @@
         })
         
         //注册一个子组件
-        var childComponent = {template:"<p>I am from child component</p>"};
+        var childComponent1 = {
+        	 template:"<p>I am from child component1</p>",
+        	 data:function(){
+        	 	return {msg:"I am a message from  child component1"}
+        	 }
+        };
+        
+        //注册一个子组件
+        var childComponent2 = {
+        	 template:"<p>I am from child component2</p>",
+        	 data:function(){
+        	 	return {msg:"I am a message from  child component2"}
+        	 }
+        };
+        
         //注册一个父组件
         var parentComponent = {
         	template:"#parentComponent",
-            components:{'child-component':childComponent}
+            components:{'child-component1':childComponent1,'child-component2':childComponent2}
         }
         
         // 创建根实例
-        new Vue({
+        var vm = new Vue({
             el: '#app',
             data:{parentMessage:'dynamic prop',total:0},
             components: {
@@ -101,6 +120,11 @@
             methods:{
                 sum_total:function () {
                     this.total+=1;
+                },
+                showChildMsg:function(){
+                	for(var i=0;i<2;i++){
+                		alert(this.$refs.pc.$children[i].msg);
+                	}
                 }
             }
         })

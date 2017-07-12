@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="js/vue.js"></script>    
+    <script type="text/javascript">
+        window.onload = function(){
+        	Vue.directive('red',{
+	            inserted:function(el){
+	                el.style.background = 'red';
+	            }
+	        });
+            var app = new Vue({
+	            el:'#app',
+	            data:{
+	                msg1:"Hello Vue",
+	                msg2:"Hello World"
+	            }
+            
+            })
+        }
+    </script>
+</head>
+<body>
+    <!-- 子组件改变父组件的数据 -->
+    <div id="app">
+        <div>
+            <p v-text="msg1"></p>
+            <p v-red="">{{msg2}}</p>
+        </div>
+    </div>
+
+   
+
+</body>
+</html>

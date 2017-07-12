@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="js/vue.js"></script>    
+    <script type="text/javascript">
+        window.onload = function(){
+            var app = new Vue({
+            el:'#box',
+            data:{
+                myData:{
+                    info:'父组件信息'
+                }
+            },
+            components:{
+                'v-com':{
+                    props:['data'],
+                    template:'#tpl',
+                    methods:{
+                        change(){
+                            this.data.info = 'change info'
+                        }
+                    }
+                }
+            }
+        })
+        }
+    </script>
+</head>
+<body>
+    <!-- 子组件改变父组件的数据 -->
+    <div id="box">
+        <div>
+            <p>{{myData.info}}</p>
+            <v-com :data ="myData"></v-com>
+        </div>
+    </div>
+
+    <!-- 模板 -->
+    <template id="tpl">
+        <div>
+            <button @click="change">change</button>
+            <p>{{data.info}}</p>
+        </div>
+    </template>
+
+</body>
+</html>
